@@ -17,9 +17,9 @@ public class Actions {
     public Actions() {
         this.herbivoreSpawnRate = 2;
         this.predatorSpawnRate = 1;
-        this.grassSpawnRate = 15;
-        this.rockSpawnRate = 20;
-        this.treeSpawnRate = 40;
+        this.grassSpawnRate = 5;
+        this.rockSpawnRate = 10;
+        this.treeSpawnRate = 80;
     }
 
     public Actions(Integer herbivoreSpawnRate, Integer predatorSpawnRate, Integer grassSpawnRate, Integer rockSpawnRate, Integer treeSpawnRate) {

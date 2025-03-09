@@ -21,7 +21,7 @@ public class Renderer {
 
         Entity toPrint = map.get(new Coordinates(coordinateX, coordinateY));
         if (toPrint == null){
-            System.out.printf("%s" + "%s", backgroundColor, resetColor);
+            System.out.printf("%s" + " " + "%s", backgroundColor, resetColor);
         }else {
             System.out.printf("%s" + "%-6s" + "%s",
                     backgroundColor,
