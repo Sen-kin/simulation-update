@@ -18,10 +18,10 @@ public class Renderer {
     private static  void renderCell(Integer coordinateX, Integer coordinateY, HashMap<Coordinates, Entity> map){
         String resetColor = "\u001b[0m";
         String backgroundColor = "\u001b[48;5;64m";
-        String space = "🏩";
+
         Entity toPrint = map.get(new Coordinates(coordinateX, coordinateY));
         if (toPrint == null){
-            System.out.printf("%s+%s+%s", backgroundColor, space, resetColor);
+            System.out.printf("%s" + "%s", backgroundColor, resetColor);
         }else {
             System.out.printf("%s" + "%-6s" + "%s",
                     backgroundColor,

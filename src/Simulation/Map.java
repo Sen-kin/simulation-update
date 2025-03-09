@@ -12,8 +12,8 @@ public class Map {
     private final HashMap<Coordinates, Entity> map;
 
     public Map() {
-        this.mapHeight = 7;
-        this.mapWidth = 5;
+        this.mapHeight = 15;
+        this.mapWidth = 15;
         this.map = new HashMap<>();
     }
 

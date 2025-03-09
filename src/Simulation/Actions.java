@@ -4,6 +4,8 @@ import Creatures.*;
 import Entities.*;
 import StaticEntities.*;
 
+import java.beans.BeanProperty;
+
 
 public class Actions {
     private final Integer herbivoreSpawnRate;
@@ -13,8 +15,8 @@ public class Actions {
     private final Integer treeSpawnRate;
 
     public Actions() {
-        this.herbivoreSpawnRate = 5;
-        this.predatorSpawnRate = 7;
+        this.herbivoreSpawnRate = 2;
+        this.predatorSpawnRate = 1;
         this.grassSpawnRate = 15;
         this.rockSpawnRate = 20;
         this.treeSpawnRate = 40;
@@ -54,24 +56,22 @@ public class Actions {
         return placeForEntity;
     }
 
+
     private Entity spawnEntity(Coordinates coordinates) {
        int number = (int)(Math.random() * 100 + 1);
 
-        if (number <= treeSpawnRate){
+        if (number <= treeSpawnRate) {
             return new Tree(coordinates);
-        }
-        if (number <= rockSpawnRate){
+        } else if (number <= treeSpawnRate + rockSpawnRate) {
             return new Rock(coordinates);
-        }
-        if (number <= grassSpawnRate){
+        } else if (number <= treeSpawnRate + rockSpawnRate + grassSpawnRate) {
             return new Grass(coordinates);
-        }
-        if (number <= herbivoreSpawnRate){
+        } else if (number <= treeSpawnRate + rockSpawnRate + grassSpawnRate + herbivoreSpawnRate) {
             return new Herbivore(coordinates);
-        }
-        if (number <= predatorSpawnRate){
+        } else if (number <= treeSpawnRate + rockSpawnRate + grassSpawnRate + herbivoreSpawnRate + predatorSpawnRate) {
             return new Predator(coordinates);
         }
+
         return null;
     }
 
