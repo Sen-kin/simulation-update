@@ -4,7 +4,8 @@ import Creatures.*;
 import Entities.*;
 import StaticEntities.*;
 
-import java.beans.BeanProperty;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class Actions {
@@ -15,11 +16,11 @@ public class Actions {
     private final Integer treeSpawnRate;
 
     public Actions() {
-        this.herbivoreSpawnRate = 2;
+        this.herbivoreSpawnRate = 1;
         this.predatorSpawnRate = 1;
         this.grassSpawnRate = 5;
-        this.rockSpawnRate = 10;
-        this.treeSpawnRate = 80;
+        this.rockSpawnRate = 0;
+        this.treeSpawnRate = 0;
     }
 
     public Actions(Integer herbivoreSpawnRate, Integer predatorSpawnRate, Integer grassSpawnRate, Integer rockSpawnRate, Integer treeSpawnRate) {
@@ -34,21 +35,16 @@ public class Actions {
         for (int i = 0; i < map.getMapHeight(); i++) {
             for (int j = 0; j < map.getMapWidth(); j++) {
                 Coordinates coordinatesToSpawn = getRandomFreeCoordinates(map);
-                map.getMap().put(coordinatesToSpawn, spawnEntity(coordinatesToSpawn));
+                map.getField().put(coordinatesToSpawn, spawnEntity(coordinatesToSpawn));
             }
         }
-    }
-
-    void initAction(Map map){
-        fillMapWithEntities(map);
-        Renderer.renderMap(map);
     }
 
     private Coordinates getRandomFreeCoordinates(Map map){
         Coordinates placeForEntity = new Coordinates((int)(Math.random() * map.getMapHeight()),
                                                      (int)(Math.random() * map.getMapWidth())
                                                      );
-        while (map.getMap().containsKey(placeForEntity)){
+        while (map.getField().containsKey(placeForEntity)){
             placeForEntity = new Coordinates((int)(Math.random() * map.getMapHeight()),
                                              (int)(Math.random() * map.getMapWidth())
                                              );
@@ -56,8 +52,7 @@ public class Actions {
         return placeForEntity;
     }
 
-
-    private Entity spawnEntity(Coordinates coordinates) {
+    private Entity spawnEntity(final Coordinates coordinates) {
        int number = (int)(Math.random() * 100 + 1);
 
         if (number <= treeSpawnRate) {
@@ -74,6 +69,67 @@ public class Actions {
 
         return null;
     }
+
+    private Coordinates getCoordinatesForGrass (final Map map){
+            Coordinates coordinatesForGrass = getRandomFreeCoordinates(map);
+                while (map.getField().get(coordinatesForGrass) instanceof Creature ||
+                       map.getField().get(coordinatesForGrass) instanceof Rock)
+                        coordinatesForGrass = getRandomFreeCoordinates(map);
+
+            return coordinatesForGrass;
+    }
+
+    void initAction(final Map map){
+            fillMapWithEntities(map);
+            Renderer renderer = new Renderer();
+            renderer.renderMap(map);
+        }
+
+    void moveAction(final HashMap<Coordinates, Entity> map)   {
+            for (Coordinates key: map.keySet()){
+                Entity currentCellEntity = map.get(key);
+                if (currentCellEntity instanceof Creature){
+                    ((Creature) currentCellEntity).makeMove();
+                }
+            }
+        }
+
+    void growGrassAction(final Map map) {
+        int grassCount = (int)(Math.random() * (map.getField().size()) / 5 + 1);
+        for (int i = 0; i < grassCount; i++) {
+            Coordinates coordinatesToSpawn = getCoordinatesForGrass(map);
+            map.getField().put(coordinatesToSpawn, new Grass(coordinatesToSpawn));
+        }
+    }
+
+    boolean stopAction (final HashMap<Coordinates, Entity> map){
+        return areHerbivoresExist(map);
+    }
+
+    boolean areHerbivoresExist(final HashMap<Coordinates, Entity> field){
+        boolean herbivoreExists = false;
+        for (Coordinates key: field.keySet()){
+            herbivoreExists = field.get(key) instanceof Herbivore;
+            if (herbivoreExists) return herbivoreExists;
+        }
+        return herbivoreExists;
+    }
+
+    boolean isGrassExists (final HashMap<Coordinates, Entity> field){
+        boolean grassExists = false;
+        for (Coordinates key: field.keySet()){
+            grassExists = field.get(key) instanceof Grass;
+            if (grassExists) return grassExists;
+        }
+        return grassExists;
+    }
+
+    void makeOneTurnAction (final Map simulationMap){
+        Renderer renderer = new Renderer();
+        moveAction(simulationMap.getField());
+        renderer.renderMap(simulationMap);
+    }
+
 
 }
 

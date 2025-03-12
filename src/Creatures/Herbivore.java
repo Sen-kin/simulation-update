@@ -12,7 +12,20 @@ public class Herbivore extends Creature{
     }
 
     @Override
-    void makeMove() {
+    public void makeMove() {
+        PathFinder pathFinder = new PathFinder();
+
+        Coordinates cellToMove = pathFinder.bestCellToStayForHerbivore(this.getCoordinates());
+
+        if (pathFinder.checkIfTheCellContainsGrass(cellToMove)){
+                eatGrass(cellToMove);
+        }
+
+
+        setCoordinates(cellToMove);
+    }
+
+    private void eatGrass (Coordinates grassToEat){
 
     }
 
@@ -23,4 +36,6 @@ public class Herbivore extends Creature{
     public void setHealth(Integer health) {
         this.health = health;
     }
+
+
 }

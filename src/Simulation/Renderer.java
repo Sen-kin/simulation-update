@@ -7,13 +7,15 @@ import java.util.HashMap;
 
 public class Renderer {
 
-    static void renderMap (Map map){
+     void renderMap (Map map){
          for (int i = 0; i < map.getMapHeight(); i++) {
              for (int j = 0; j < map.getMapWidth(); j++) {
-                    renderCell(i, j, map.getMap());
+                    renderCell(i, j, map.getField());
              }
              System.out.println();
          }
+         System.out.print("\n\n");
+
     }
     private static  void renderCell(Integer coordinateX, Integer coordinateY, HashMap<Coordinates, Entity> map){
         String resetColor = "\u001b[0m";

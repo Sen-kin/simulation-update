@@ -10,5 +10,7 @@ public abstract class Creature extends Entity {
         super(coordinates);
     }
 
-    abstract void makeMove();
+   public abstract void makeMove();
+
+
 }

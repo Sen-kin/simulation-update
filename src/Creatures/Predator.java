@@ -15,7 +15,12 @@ public class Predator extends Creature{
 
 
     @Override
-    void makeMove() {
+    public void makeMove() {
+        PathFinder pathFinder = new PathFinder();
+        Coordinates coordinatesToStay = pathFinder.bestCellToStayForPredator(this.getCoordinates());
 
+        if (pathFinder.checkIfTheCellContainsHerbivore(coordinatesToStay)){
+
+        }
     }
 }

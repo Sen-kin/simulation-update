@@ -25,7 +25,7 @@ public class Map {
         return mapWidth;
     }
 
-    public HashMap<Coordinates, Entity> getMap() {
+    public HashMap<Coordinates, Entity> getField() {
         return map;
     }
 

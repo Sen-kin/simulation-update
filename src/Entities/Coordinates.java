@@ -23,4 +23,12 @@ public class Coordinates {
     public int hashCode() {
         return Objects.hash(coordinateX, coordinateY);
     }
+
+    public Integer getCoordinateX() {
+        return coordinateX;
+    }
+
+    public Integer getCoordinateY() {
+        return coordinateY;
+    }
 }
