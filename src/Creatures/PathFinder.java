@@ -129,4 +129,5 @@ public class PathFinder {
         return map.getField().get(cell) instanceof Herbivore;
     }
 
+
 }

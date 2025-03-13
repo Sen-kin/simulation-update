@@ -2,6 +2,8 @@ package Creatures;
 
 import Entities.Coordinates;
 
+
+
 public class Herbivore extends Creature{
     private Integer health = 1;
 
@@ -20,13 +22,16 @@ public class Herbivore extends Creature{
         if (pathFinder.checkIfTheCellContainsGrass(cellToMove)){
                 eatGrass(cellToMove);
         }
+            fieldWhereMoving.remove(getCoordinates());
+            fieldWhereMoving.put(getCoordinates(), null);
+            fieldWhereMoving.put(cellToMove, new Herbivore(cellToMove));
+            setCoordinates(cellToMove);
 
-
-        setCoordinates(cellToMove);
     }
 
     private void eatGrass (Coordinates grassToEat){
-
+            fieldWhereMoving.remove(grassToEat);
+            fieldWhereMoving.put(grassToEat, null);
     }
 
     public Integer getHealth() {

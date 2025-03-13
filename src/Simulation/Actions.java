@@ -4,7 +4,6 @@ import Creatures.*;
 import Entities.*;
 import StaticEntities.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 
@@ -23,6 +22,7 @@ public class Actions {
         this.treeSpawnRate = 0;
     }
 
+
     public Actions(Integer herbivoreSpawnRate, Integer predatorSpawnRate, Integer grassSpawnRate, Integer rockSpawnRate, Integer treeSpawnRate) {
         this.herbivoreSpawnRate = herbivoreSpawnRate;
         this.predatorSpawnRate = predatorSpawnRate;
@@ -31,7 +31,7 @@ public class Actions {
         this.treeSpawnRate = treeSpawnRate;
     }
 
-    private void fillMapWithEntities (Map map){
+    private void fillMapWithEntities(Map map) {
         for (int i = 0; i < map.getMapHeight(); i++) {
             for (int j = 0; j < map.getMapWidth(); j++) {
                 Coordinates coordinatesToSpawn = getRandomFreeCoordinates(map);
@@ -40,20 +40,20 @@ public class Actions {
         }
     }
 
-    private Coordinates getRandomFreeCoordinates(Map map){
-        Coordinates placeForEntity = new Coordinates((int)(Math.random() * map.getMapHeight()),
-                                                     (int)(Math.random() * map.getMapWidth())
-                                                     );
-        while (map.getField().containsKey(placeForEntity)){
-            placeForEntity = new Coordinates((int)(Math.random() * map.getMapHeight()),
-                                             (int)(Math.random() * map.getMapWidth())
-                                             );
+    private Coordinates getRandomFreeCoordinates(Map map) {
+        Coordinates placeForEntity = new Coordinates((int) (Math.random() * map.getMapHeight()),
+                (int) (Math.random() * map.getMapWidth())
+        );
+        while (map.getField().containsKey(placeForEntity)) {
+            placeForEntity = new Coordinates((int) (Math.random() * map.getMapHeight()),
+                    (int) (Math.random() * map.getMapWidth())
+            );
         }
         return placeForEntity;
     }
 
     private Entity spawnEntity(final Coordinates coordinates) {
-       int number = (int)(Math.random() * 100 + 1);
+        int number = (int) (Math.random() * 100 + 1);
 
         if (number <= treeSpawnRate) {
             return new Tree(coordinates);
@@ -70,66 +70,69 @@ public class Actions {
         return null;
     }
 
-    private Coordinates getCoordinatesForGrass (final Map map){
-            Coordinates coordinatesForGrass = getRandomFreeCoordinates(map);
-                while (map.getField().get(coordinatesForGrass) instanceof Creature ||
-                       map.getField().get(coordinatesForGrass) instanceof Rock)
-                        coordinatesForGrass = getRandomFreeCoordinates(map);
+    private Coordinates getCoordinatesForGrass(final Map map) {
+        Coordinates coordinatesForGrass = getRandomFreeCoordinates(map);
+        while (map.getField().get(coordinatesForGrass) instanceof Creature ||
+                map.getField().get(coordinatesForGrass) instanceof Rock)
+            coordinatesForGrass = getRandomFreeCoordinates(map);
 
-            return coordinatesForGrass;
+        return coordinatesForGrass;
     }
 
-    void initAction(final Map map){
-            fillMapWithEntities(map);
-            Renderer renderer = new Renderer();
-            renderer.renderMap(map);
-        }
+    void initAction(final Map map) {
+        fillMapWithEntities(map);
+        Renderer renderer = new Renderer();
+        renderer.renderMap(map);
+    }
 
-    void moveAction(final HashMap<Coordinates, Entity> map)   {
-            for (Coordinates key: map.keySet()){
-                Entity currentCellEntity = map.get(key);
-                if (currentCellEntity instanceof Creature){
-                    ((Creature) currentCellEntity).makeMove();
-                }
+    void moveAction(final HashMap<Coordinates, Entity> map) {
+        for (Coordinates key : map.keySet()) {
+            Entity currentCellEntity = map.get(key);
+            if (currentCellEntity instanceof Creature) {
+                ((Creature) currentCellEntity).makeMove();
             }
         }
+    }
 
     void growGrassAction(final Map map) {
-        int grassCount = (int)(Math.random() * (map.getField().size()) / 5 + 1);
+        int grassCount = (int) (Math.random() * (map.getField().size()) / 5 + 1);
         for (int i = 0; i < grassCount; i++) {
             Coordinates coordinatesToSpawn = getCoordinatesForGrass(map);
-            map.getField().put(coordinatesToSpawn, new Grass(coordinatesToSpawn));
+            map.getCopyOfField().put(coordinatesToSpawn, new Grass(coordinatesToSpawn));
         }
     }
 
-    boolean stopAction (final HashMap<Coordinates, Entity> map){
+    boolean stopAction(final HashMap<Coordinates, Entity> map) {
         return areHerbivoresExist(map);
     }
 
-    boolean areHerbivoresExist(final HashMap<Coordinates, Entity> field){
+    boolean areHerbivoresExist(final HashMap<Coordinates, Entity> field) {
         boolean herbivoreExists = false;
-        for (Coordinates key: field.keySet()){
+        for (Coordinates key : field.keySet()) {
             herbivoreExists = field.get(key) instanceof Herbivore;
             if (herbivoreExists) return herbivoreExists;
         }
         return herbivoreExists;
     }
 
-    boolean isGrassExists (final HashMap<Coordinates, Entity> field){
+    boolean isGrassExists(final HashMap<Coordinates, Entity> field) {
         boolean grassExists = false;
-        for (Coordinates key: field.keySet()){
+        for (Coordinates key : field.keySet()) {
             grassExists = field.get(key) instanceof Grass;
             if (grassExists) return grassExists;
         }
         return grassExists;
     }
 
-    void makeOneTurnAction (final Map simulationMap){
+    void makeOneTurnAction(final Map simulationMap) {
         Renderer renderer = new Renderer();
         moveAction(simulationMap.getField());
+        mergeCopyToOrigin(simulationMap.getField(), simulationMap.getCopyOfField());
         renderer.renderMap(simulationMap);
     }
 
-
+   private void mergeCopyToOrigin(HashMap<Coordinates, Entity> origin, HashMap<Coordinates, Entity> copy){
+        origin.putAll(copy);
+    }
 }
 

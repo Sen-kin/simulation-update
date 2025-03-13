@@ -10,11 +10,20 @@ public class Map {
     private final Integer mapHeight;
     private final Integer mapWidth;
     private final HashMap<Coordinates, Entity> map;
+    private final HashMap<Coordinates, Entity> copyOfField;
 
     public Map() {
-        this.mapHeight = 15;
-        this.mapWidth = 15;
-        this.map = new HashMap<>();
+        mapHeight = 15;
+        mapWidth = 15;
+        map = new HashMap<>();
+        copyOfField = new HashMap<>(map);
+    }
+
+    public Map(Integer mapHeight, Integer mapWidth) {
+        this.mapHeight = mapHeight;
+        this.mapWidth = mapWidth;
+        map = new HashMap<>();
+        copyOfField = new HashMap<>(map);
     }
 
     public Integer getMapHeight() {
@@ -29,5 +38,7 @@ public class Map {
         return map;
     }
 
-
+    public HashMap<Coordinates, Entity> getCopyOfField() {
+        return copyOfField;
+    }
 }
