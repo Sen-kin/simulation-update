@@ -10,8 +10,16 @@ public class Simulation {
     private static final Map simulationMap = new Map(3, 3);
     private final HashMap<Coordinates, Entity> field = simulationMap.getField();
 
+    public Simulation() {
+      Scanner scanner = new Scanner(System.in);
+        System.out.print("Введите высоту и ширину поля через пробел: ");
+        Integer mapHeight = scanner.nextInt();
+        Integer mapWidth = scanner.nextInt();
+        simulationMap = new Map(mapHeight, mapWidth);
+        field = simulationMap.getField();
+    }
 
-    public static Map getSimulationMap() {
+    public Map getSimulationMap() {
         return simulationMap;
     }
 
