@@ -7,8 +7,8 @@ import Entities.Entity;
 import java.util.HashMap;
 
 public class Simulation {
-    private static final Map simulationMap = new Map(3, 3);
-    private final HashMap<Coordinates, Entity> field = simulationMap.getField();
+    private final Map simulationMap;
+    private final HashMap<Coordinates, Entity> field;
 
     public Simulation() {
       Scanner scanner = new Scanner(System.in);
