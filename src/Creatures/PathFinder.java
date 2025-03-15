@@ -2,16 +2,16 @@ package Creatures;
 
 import Entities.Coordinates;
 import Entities.Entity;
-import Simulation.Map;
+import Simulation.Main;
 import StaticEntities.Grass;
+import StaticEntities.StaticEntity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class PathFinder {
 
-    Map map = new Map();
-    HashMap<Coordinates, Entity> field = map.getField();
+    HashMap<Coordinates, Entity> field = Main.getSimulation().getSimulationMap().getField();
 
     private double findDistance(double a, double b){
         return Math.sqrt((Math.pow(a, 2)) + Math.pow(b, 2));
@@ -60,23 +60,29 @@ public class PathFinder {
         return minimalDistance;
     }
 
+    Coordinates[] getNeighbors(Coordinates position){
+        return new Coordinates[]
+                {
+                        new Coordinates(position.getCoordinateX() - 1, position.getCoordinateY()),
+                        new Coordinates(position.getCoordinateX() + 1, position.getCoordinateY()),
+                        new Coordinates(position.getCoordinateX(), position.getCoordinateY() - 1),
+                        new Coordinates(position.getCoordinateX(), position.getCoordinateY() + 1)
+                };
+    }
+
     Coordinates bestCellToStayForHerbivore(Coordinates herbivorePosition){
 
         Coordinates bestCell = null;
 
-            Coordinates[] neighbors = new Coordinates[]
-                    {
-                    new Coordinates(herbivorePosition.getCoordinateX() - 1, herbivorePosition.getCoordinateY()),
-                    new Coordinates(herbivorePosition.getCoordinateX() + 1, herbivorePosition.getCoordinateY()),
-                    new Coordinates(herbivorePosition.getCoordinateX(), herbivorePosition.getCoordinateY() - 1),
-                    new Coordinates(herbivorePosition.getCoordinateX(), herbivorePosition.getCoordinateY() + 1)
-                    };
+            Coordinates[] neighbors = getNeighbors(herbivorePosition);
 
             ArrayList<Coordinates> cellsToMoveOn = new ArrayList<>();
 
         for (Coordinates coordinates: field.keySet()){
              Entity currentEntity = field.get(coordinates);
-             if (isNeighbor(coordinates, neighbors) && !(currentEntity instanceof Creature))
+             if (isNeighbor(coordinates, neighbors) && !(currentEntity instanceof Creature)
+                                                    && !(currentEntity instanceof StaticEntity)
+                )
                  cellsToMoveOn.add(coordinates);
         }
 
@@ -86,7 +92,10 @@ public class PathFinder {
         {
             double distance = findDistanceToNearestGrass(cell);
 
-            if (distance <= minimalDistance) bestCell = cell;
+            if (distance < minimalDistance) {
+                minimalDistance = distance;
+                bestCell = cell;
+            }
         }
 
         return (bestCell == null)? herbivorePosition: bestCell;
@@ -96,13 +105,7 @@ public class PathFinder {
 
         Coordinates bestCell = null;
 
-        Coordinates[] neighbors = new Coordinates[]
-                {
-                        new Coordinates(predatorPosition.getCoordinateX() - 1, predatorPosition.getCoordinateY()),
-                        new Coordinates(predatorPosition.getCoordinateX() + 1, predatorPosition.getCoordinateY()),
-                        new Coordinates(predatorPosition.getCoordinateX(), predatorPosition.getCoordinateY() - 1),
-                        new Coordinates(predatorPosition.getCoordinateX(), predatorPosition.getCoordinateY() + 1)
-                };
+        Coordinates[] neighbors = getNeighbors(predatorPosition);
 
         ArrayList<Coordinates> cellsToMoveOn = new ArrayList<>();
 
@@ -122,11 +125,11 @@ public class PathFinder {
     }
 
     boolean checkIfTheCellContainsGrass (Coordinates cell){
-        return map.getField().get(cell) instanceof Grass;
+        return field.get(cell) instanceof Grass;
     }
 
     boolean checkIfTheCellContainsHerbivore (Coordinates cell){
-        return map.getField().get(cell) instanceof Herbivore;
+        return field.get(cell) instanceof Herbivore;
     }
 
 

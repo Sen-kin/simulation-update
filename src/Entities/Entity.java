@@ -1,5 +1,6 @@
 package Entities;
 
+
 public abstract class Entity {
 
     private Coordinates coordinates;

@@ -1,9 +1,8 @@
 package StaticEntities;
 
 import Entities.Coordinates;
-import Entities.Entity;
 
-public class Rock extends Entity {
+public class Rock extends StaticEntity {
     public Rock(Coordinates coordinates){
         super(coordinates);
         sprite = "🗻";

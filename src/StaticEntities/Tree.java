@@ -1,9 +1,8 @@
 package StaticEntities;
 
 import Entities.Coordinates;
-import Entities.Entity;
 
-public class Tree extends Entity {
+public class Tree extends StaticEntity {
 
 
     public Tree(Coordinates coordinates) {

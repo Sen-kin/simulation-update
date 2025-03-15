@@ -5,6 +5,7 @@ import Entities.Entity;
 
 
 import java.util.HashMap;
+import java.util.Scanner;
 
 public class Simulation {
     private final Map simulationMap;
@@ -34,7 +35,9 @@ public class Simulation {
          while (actions.areHerbivoresExist(field))
          {
             actions.makeOneTurnAction(simulationMap);
+
             Thread.sleep(1000);
+
             if (!actions.isGrassExists(field)) actions.growGrassAction(simulationMap);
          }
     }

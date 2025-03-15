@@ -2,15 +2,14 @@ package Creatures;
 
 import Entities.Coordinates;
 import Entities.Entity;
-import Simulation.Simulation;
-import Simulation.Map;
 
-import java.util.HashMap;
+import Simulation.Main;
+import Simulation.Map;
 
 
 public abstract class Creature extends Entity {
-    protected final Map map = Simulation.getSimulationMap();
-    protected final HashMap<Coordinates, Entity> fieldWhereMoving = map.getCopyOfField();
+    protected Map simulationMap = Main.getSimulation().getSimulationMap();
+
 
     public Creature(Coordinates coordinates)
     {

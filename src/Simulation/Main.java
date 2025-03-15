@@ -1,9 +1,14 @@
 package Simulation;
 
 public class Main {
-    public static void main(String[] args) throws InterruptedException {
-        Simulation simulation = new Simulation();
-        simulation.startSimulation();
+    private static final Simulation simulation = new Simulation();
 
+
+    public static void main(String[] args) throws InterruptedException {
+        simulation.startSimulation();
+    }
+
+    public static Simulation getSimulation(){
+        return simulation;
     }
 }
