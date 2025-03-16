@@ -80,8 +80,9 @@ public class PathFinder {
 
         for (Coordinates coordinates: field.keySet()){
              Entity currentEntity = field.get(coordinates);
-             if (isNeighbor(coordinates, neighbors) && !(currentEntity instanceof Creature)
-                                                    && !(currentEntity instanceof StaticEntity)
+             if (isNeighbor(coordinates, neighbors)
+                     && !(currentEntity instanceof Creature)
+                     && !(currentEntity instanceof StaticEntity)
                 )
                  cellsToMoveOn.add(coordinates);
         }
@@ -111,7 +112,10 @@ public class PathFinder {
 
         for (Coordinates coordinates: field.keySet()){
             Entity currentEntity = field.get(coordinates);
-            if (isNeighbor(coordinates, neighbors) && !(currentEntity instanceof Creature))
+            if (isNeighbor(coordinates, neighbors)
+                    && !(currentEntity instanceof Predator)
+                    && !(currentEntity instanceof StaticEntity)
+            )
                 cellsToMoveOn.add(coordinates);
         }
 
@@ -119,7 +123,10 @@ public class PathFinder {
         for (Coordinates cell: cellsToMoveOn){
             double distance = findDistanceToNearestHerbivore(cell);
 
-            if (distance <= minimalDistance) bestCell = cell;
+            if (distance < minimalDistance) {
+                minimalDistance = distance;
+                bestCell = cell;
+            }
         }
         return (bestCell == null)? predatorPosition: bestCell;
     }

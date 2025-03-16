@@ -42,8 +42,8 @@ public class Actions {
 
     private Coordinates getRandomFreeCoordinates(final Map map) {
         Coordinates placeForEntity = new Coordinates((int) (Math.random() * map.getMapHeight()),
-                (int) (Math.random() * map.getMapWidth())
-        );
+                                                     (int) (Math.random() * map.getMapWidth())
+                                                    );
         while (map.getField().containsKey(placeForEntity)) {
             placeForEntity = new Coordinates((int) (Math.random() * map.getMapHeight()),
                     (int) (Math.random() * map.getMapWidth())
@@ -71,11 +71,18 @@ public class Actions {
     }
 
     private Coordinates getCoordinatesForGrass(final Map map) {
-        Coordinates coordinatesForGrass = getRandomFreeCoordinates(map);
-        while (map.getField().get(coordinatesForGrass) != null)
-            coordinatesForGrass = getRandomFreeCoordinates(map);
+        return getRandomNullCoordinates(map);
+    }
 
-        return coordinatesForGrass;
+    private Coordinates getRandomNullCoordinates (final Map map){
+        Coordinates emptyCell = new Coordinates((int) (Math.random() * map.getMapHeight()),
+                                                (int) (Math.random() * map.getMapWidth())
+                                               );
+        while (map.getField().get(emptyCell) != null)
+            emptyCell = new Coordinates((int) (Math.random() * map.getMapHeight()),
+                    (int) (Math.random() * map.getMapWidth())
+            );
+        return emptyCell;
     }
 
     void initAction(final Map map) {

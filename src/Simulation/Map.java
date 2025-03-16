@@ -43,5 +43,6 @@ public class Map {
     }
     public void removeEntityFromMap(Coordinates coordinates){
         map.remove(coordinates);
+        map.put(coordinates, null);
     }
 }

@@ -5,7 +5,7 @@ public abstract class Entity {
 
     private Coordinates coordinates;
     protected String sprite;
-    protected static final Integer moveLength = 1;
+    protected Integer moveLength;
 
     public Entity(Coordinates coordinates) {
         this.coordinates = coordinates;
